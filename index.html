@@ -1,0 +1,555 @@
+<!DOCTYPE html>  
+<html lang="id">  
+<head>  
+  <meta charset="UTF-8"/>  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+  <title>DIZ FLYZE AUTO SUBSCRIBE</title>  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>  
+  <style>  
+    :root {  
+      --primary: #ff0050;  
+      --success: #00c851;  
+      --bg: #0f0f0f;  
+      --card: #1e1e1e;  
+      --text: #ffffff;  
+      --text-muted: #b3b3b3;  
+    }  
+    *{margin:0;padding:0;box-sizing:border-box}  
+    body{  
+      font-family:"Poppins",sans-serif;  
+      background:var(--bg);  
+      color:var(--text);  
+      display:flex;  
+      align-items:center;  
+      justify-content:center;  
+      min-height:100vh;  
+      padding:20px;  
+      position: relative;  
+      overflow-x: hidden;  
+    }  
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 15, 15, 0.9);
+      z-index: 1000;
+      border-bottom: 1px solid #333;
+    }
+    
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+    
+    .hamburger {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      height: 100%;
+      background: var(--card);
+      z-index: 1001;
+      transition: right 0.3s ease;
+      padding: 20px;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+    }
+    
+    .menu-overlay.active {
+      right: 0;
+    }
+    
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #333;
+    }
+    
+    .menu-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .menu-item {
+      padding: 15px 0;
+      border-bottom: 1px solid #333;
+      cursor: pointer;
+    }
+    
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+    
+    .info-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 1002;
+      display: none;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    
+    .info-modal.active {
+      display: block;
+    }
+    
+    .info-content {
+      background: var(--card);
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 600px;
+      margin: 50px auto;
+      position: relative;
+    }
+    
+    .info-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .info-logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      object-fit: cover;
+      margin: 0 auto 20px;
+      display: block;
+    }
+    
+    .info-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #2a2a2a;
+      border-radius: 10px;
+    }
+    
+    .info-section h3 {
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+    
+    .info-section pre {
+      background: #1e1e1e;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+      color: #FFC800;
+    }
+
+    #particles-js {  
+      position: absolute;  
+      width: 100%;  
+      height: 100%;  
+      top: 0;  
+      left: 0;  
+      z-index: 0;  
+    }  
+
+    .container{  
+      width:100%;  
+      max-width:420px;  
+      min-width: 300px;  
+      text-align:center;  
+      position: relative;  
+      z-index: 1;  
+      padding: 0 15px;  
+      transition: transform 0.3s ease;  
+      margin-top: 60px;
+    }  
+
+    .logo{  
+      width:90px;  
+      height:90px;  
+      border-radius:50%;  
+      border:3px solid #fff;  
+      object-fit:cover;  
+      margin-bottom:20px;  
+    }  
+
+    .card{  
+      background:var(--card);  
+      border-radius:15px;  
+      padding:25px 20px;  
+      box-shadow:0 8px 20px rgba(0,0,0,.4);  
+      border:1px solid #333;  
+    }  
+
+    .card h2{  
+      font-size:1.4rem;  
+      margin-bottom:8px;  
+    }  
+
+    .card p{  
+      color:var(--text-muted);  
+      font-size:.85rem;  
+      margin-bottom:20px;  
+      line-height: 1.4;  
+    }  
+
+    .btn-group{  
+      display:flex;  
+      flex-direction:column;  
+      gap:10px;  
+    }  
+
+    .btn{  
+      position:relative;  
+      padding:12px 15px;  
+      border:none;  
+      border-radius:8px;  
+      font-weight:600;  
+      font-size:.9rem;  
+      cursor:pointer;  
+      display:flex;  
+      align-items:center;  
+      justify-content: flex-start;  
+      gap:10px;  
+      color:var(--text);  
+      overflow:hidden;  
+      background:#2a2a2a;  
+      padding-left: 20px;  
+    }  
+
+    .btn span,.btn i{  
+      z-index:2;  
+      position:relative;  
+      white-space: nowrap;  
+    }  
+
+    .btn::after{  
+      content:'';  
+      position:absolute;  
+      inset:0;  
+      background:linear-gradient(90deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.9) 50%,rgba(0,0,0,0) 100%);  
+      mask-image:linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%);  
+      transform:translateX(-100%);  
+      z-index:1;  
+    }  
+
+    .btn.running::after{  
+      animation:wave 2s linear infinite;  
+    }  
+
+    @keyframes wave{  
+      0%{transform:translateX(-100%)}  
+      100%{transform:translateX(100%)}  
+    }  
+
+    .progress-bar{  
+      height:6px;  
+      background:#333;  
+      border-radius:3px;  
+      overflow:hidden;  
+      margin-top: 5px;  
+    }  
+
+    .progress-fill {  
+      height: 100%;  
+      width: 0;  
+      background: linear-gradient(90deg, #000000, #FFC800, #000000);  
+      background-size: 200% 100%;  
+      background-position: 200% 0%;  
+      animation: gradientMove 1s linear infinite;  
+      transition: width 0.5s ease;  
+    }  
+
+    @keyframes gradientMove {  
+      0% {  
+        background-position: 200% 0%;  
+      }  
+      100% {  
+        background-position: 0% 0%;  
+      }  
+    }  
+
+    .download-wrapper{margin-top:5px}  
+
+    .download-btn{  
+      width:100%;  
+      padding:7px 0;  
+      border:none;  
+      border-radius:50px;  
+      font-weight:600;  
+      font-size:.95rem;  
+      cursor:pointer;  
+      background:var(--primary);  
+      color:#fff;  
+    }  
+
+    .download-btn:disabled{background:#555;cursor:not-allowed}  
+
+    @media (max-width: 400px) {  
+      .logo {  
+        width: 80px;  
+        height: 80px;  
+      }  
+      .card {  
+        padding: 20px 15px;  
+      }  
+      .card h2 {  
+        font-size: 1.3rem;  
+      }  
+      .btn {  
+        padding: 10px 12px;  
+        font-size: .85rem;  
+      }  
+    }  
+
+    @media (max-width: 350px) {  
+      .logo {  
+        width: 70px;  
+        height: 70px;  
+      }  
+      .card h2 {  
+        font-size: 1.2rem;  
+      }  
+      .card p {  
+        font-size: .8rem;  
+      }  
+      .btn {  
+        font-size: .8rem;  
+      }  
+    }
+
+    @media (orientation: landscape) and (max-height: 400px) {
+      .container {
+        transform: scale(0.9);
+      }
+    }
+  </style>  
+</head>  
+<body>  
+  <nav class="navbar">
+    <div class="navbar-brand">DIZFLYZE</div>
+    <button class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+  <div class="menu-overlay" id="menuOverlay">
+    <div class="menu-header">
+      <h3>Menu</h3>
+      <button class="menu-close" id="menuClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="menu-item" id="infoBtn">Informasi</div>
+    <div class="menu-item" id="contactBtn">Hubungi Kami</div>
+  </div>
+
+  <div class="info-modal" id="infoModal">
+    <div class="info-content">
+      <button class="info-close" id="infoClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <img src="https://i.ibb.co/27QMWMDd/20250801-221959.jpg" alt="Logo" class="info-logo"/>
+      <h2 style="text-align: center; margin-bottom: 20px;">INFORMASI</h2>
+      
+      <div class="info-section">
+        <p>Anda harus menginstall depedensi yang ada di bawah ini agar script berjalan dengan baik.</p>
+      </div>
+      
+      <div class="info-section">
+        <pre>
+$ pkg update -y && pkg upgrade -y
+$ pkg install python -y
+$ pkg install clang -y
+$ pkg install git -y
+$ pkg install tinyproxy -y
+$ termux-setup-storage
+$ pip install timedelta
+$ pip install pycryptodome
+$ pip install requests
+$ pip install fake-useragent
+$ pip install rich</pre>
+      </div>
+
+      <div class="info-section">
+        <p>Ketikan seperti ini di termux</p>
+        <pre>$ nano spam.py</pre>
+        <p>Jika halaman kosong atau hitam silahkan tempel scriptnya ke kotakan hitam, Pastikan semua code di salin penuh agar tidak error.</p>
+      </div>
+      
+      <div class="info-section">
+        <p>Ikuti seperti ini agar tersimpan</p>
+        <pre>CTRL, X, Y, ENTER</pre>
+      </div>
+      
+      <div class="info-section">
+        <p>Runing dengan mengetikan seperti ini.</p>
+        <pre>$ python3 spam.py</pre>
+        <p>Dan selamat anda sudah berhasil melakukan runing dan selamat menggunakan tools saya.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="particles-js"></div>  
+  <div class="container">  
+    <img src="https://i.ibb.co/27QMWMDd/20250801-221959.jpg" alt="Logo" class="logo"/>  
+    <div class="card">  
+      <h2>DIZ FLYZE</h2>  
+      <p>Lengkapi persyaratan di bawah ini agar anda bisa mendownload!</p>  
+      <div class="btn-group">  
+        <button class="btn action-btn" id="likeBtn">  
+          <i class="fas fa-thumbs-up"></i> <span>LIKE VIDEO!</span>  
+        </button>  
+        <button class="btn action-btn" id="subBtn">  
+          <i class="fas fa-bell"></i> <span>SUBSCRIBE CHANNEL!</span>  
+        </button>  
+        <button class="btn action-btn" id="commentBtn">  
+          <i class="fas fa-comment-alt"></i> <span>KOMEN DULU!</span>  
+        </button>  
+        <div class="progress-bar">  
+          <div class="progress-fill" id="progressFill"></div>  
+        </div>  
+        <div class="download-wrapper">  
+          <button class="download-btn" id="downloadBtn" disabled>DOWNLOAD</button>  
+        </div>  
+      </div>  
+    </div>  
+  </div>  
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>  
+  <script>  
+    particlesJS("particles-js", {  
+      particles: {  
+        number: { value: 80, density: { enable: true, value_area: 800 } },  
+        color: { value: "#ffffff" },  
+        shape: {  
+          type: "circle",  
+          stroke: { width: 0, color: "#000000" },  
+          polygon: { nb_sides: 5 }  
+        },  
+        opacity: { value: 0.5, random: false },  
+        size: { value: 3, random: true },  
+        line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },  
+        move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }  
+      },  
+      interactivity: {  
+        detect_on: "canvas",  
+        events: {  
+          onhover: { enable: true, mode: "grab" },  
+          onclick: { enable: true, mode: "push" },  
+          resize: true  
+        },  
+        modes: {  
+          grab: { distance: 140, line_linked: { opacity: 1 } },  
+          bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },  
+          repulse: { distance: 200, duration: 0.4 },  
+          push: { particles_nb: 4 },  
+          remove: { particles_nb: 2 }  
+        }  
+      },  
+      retina_detect: true  
+    });  
+    const hamburger = document.getElementById('hamburger');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const menuClose = document.getElementById('menuClose');
+    const infoBtn = document.getElementById('infoBtn');
+    const contactBtn = document.getElementById('contactBtn');
+    const infoModal = document.getElementById('infoModal');
+    const infoClose = document.getElementById('infoClose');
+    const whatsappLink = "https://wa.me/6288980724038?text=Halo%20Admin,%20Saya%20ingin%20bertanya%20tentang%20SC%20BAN%20WA";
+
+    hamburger.addEventListener('click', () => {
+      menuOverlay.classList.add('active');
+    });
+
+    menuClose.addEventListener('click', () => {
+      menuOverlay.classList.remove('active');
+    });
+
+    infoBtn.addEventListener('click', () => {
+      menuOverlay.classList.remove('active');
+      infoModal.classList.add('active');
+    });
+
+    contactBtn.addEventListener('click', () => {
+      menuOverlay.classList.remove('active');
+      window.open(whatsappLink, '_blank');
+    });
+
+    infoClose.addEventListener('click', () => {
+      infoModal.classList.remove('active');
+    });
+    const actions = { likeBtn: false, subBtn: false, commentBtn: false };  
+    const totalActions = Object.keys(actions).length;  
+    const progressFill = document.getElementById("progressFill");  
+    const downloadBtn = document.getElementById("downloadBtn");  
+    const youtubeLink = "https://youtu.be/3MfUZnXHkys?si=cWwj1YRc_ilEpw2O";  
+    const whatsappDownloadLink = "https://wa.me/6288980724038?text=Halo%20Admin,%20Saya%20sudah%20subscribe%20dan%20ingin%20beli%20sc%20ban%20wa%20berapaan%20ya?";  
+
+    function updateProgress() {  
+      const doneCount = Object.values(actions).filter(Boolean).length;  
+      const percentage = (doneCount / totalActions) * 100;  
+      progressFill.style.width = `${percentage}%`;  
+      downloadBtn.disabled = doneCount < totalActions;  
+    }  
+
+    document.getElementById("likeBtn").addEventListener("click", () => {  
+      if (actions.likeBtn) return;  
+      actions.likeBtn = true;  
+      document.getElementById("likeBtn").classList.add("running");  
+      setTimeout(() => {  
+        window.open(youtubeLink, "_blank");  
+        updateProgress();  
+      }, 300);  
+    });  
+
+    document.getElementById("subBtn").addEventListener("click", () => {  
+      if (actions.subBtn) return;  
+      actions.subBtn = true;  
+      document.getElementById("subBtn").classList.add("running");  
+      setTimeout(() => {  
+        window.open(youtubeLink, "_blank");  
+        updateProgress();  
+      }, 300);  
+    });  
+
+    document.getElementById("commentBtn").addEventListener("click", () => {  
+      if (actions.commentBtn) return;  
+      actions.commentBtn = true;  
+      document.getElementById("commentBtn").classList.add("running");  
+      setTimeout(() => {  
+        window.open(youtubeLink, "_blank");  
+        updateProgress();  
+      }, 300);  
+    });  
+
+    downloadBtn.addEventListener("click", () => {  
+      window.open(whatsappDownloadLink, "_blank");  
+    });
+  </script>  
+</body>  
+</html>
